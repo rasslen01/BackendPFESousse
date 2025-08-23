@@ -10,7 +10,13 @@ require('dotenv').config()
 const {connectToMongoDB} = require('./config/db');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const fieldsRouter = require('./routes/FieldsRoute');
+const userRouter = require('./routes/UserRoute');
+const matchRouter = require('./routes/MatchRoute');
+const ReservationRouter = require('./routes/ReservationRoute');
+const OrganizerRouter = require('./routes/OrganizerRoute');
+const ManagerRouter = require('./routes/ManagerRoute');
+
 
 var app = express();
 
@@ -22,7 +28,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/fields', fieldsRouter);
+app.use('/user', userRouter);
+app.use('/match', matchRouter);
+app.use('/reservation', ReservationRouter);
+app.use('/organizer', OrganizerRouter);
+app.use('/manager', ManagerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

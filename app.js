@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
 
 const http = require('http');
 require('dotenv').config()
@@ -25,6 +26,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors({
+  origin:'http://localhost:3000',
+  methods:['GET','POST','PUT','DELETE'],
+  credentials:true,
+}
+
+
+));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -55,3 +64,15 @@ const server = http.createServer(app);
 server.listen(process.env.port, () => {
   connectToMongoDB();
   console.log('Server is running on port', process.env.port)});
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
